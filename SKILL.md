@@ -27,12 +27,11 @@ Use this skill to turn a user topic, source text, or image set into Japanese mag
    - `detail`: normal punctuation and factual source context.
    - Replace Chinese quotation marks with corner brackets unless the user explicitly requires original quoted text.
    - Avoid single-character lines and single-character-plus-punctuation lines.
-6. Choose images by priority:
+6. Choose images by strict priority:
    - User-provided image paths or URLs.
-   - User-specified visual plan.
-   - Available image generation tools.
-   - Built-in generated raster PNG fallback.
-   - SVG may be used only as an internal drawing source and must be rasterized before final HTML rendering.
+   - Call a system-available model or tool to generate theme-matched bitmap images, then save the selected raster files under the output directory before rendering.
+   - Draw polished SVG artwork only after user images are absent and available image-generation models/tools are unavailable, fail, or cannot return project-local bitmap files. Record that reason in `assumptions` or `manifest`.
+   - SVG may be used only as an internal drawing source and must be rasterized to PNG before final HTML rendering.
 7. Write an input JSON spec and run:
 
 ```bash
@@ -47,7 +46,9 @@ If validation fails, shorten or rewrite copy, adjust explicit line breaks, chang
 - Do not start rendering, image generation, or copy fitting until the one-round intake form has been asked and answered, unless the user explicitly says to skip questions.
 - Missing details after the one-round intake must be filled by practical defaults rather than more questions.
 - Final HTML must not reference `.svg` files or `data:image/svg+xml`.
-- Generated or fallback images must be written as PNG files under the output directory before they are placed into image zones.
+- Image sourcing must follow the strict priority: user-provided images, then system-available bitmap generation, then polished SVG drawing as the last resort.
+- Generated, drawn, or fallback images must be written as PNG/JPEG/WebP files under the output directory before they are placed into image zones.
+- Do not treat template fallback art or SVG rasterization as equivalent to model/tool bitmap generation. If model/tool generation is skipped or fails, record the exact reason.
 - PNG poster export defaults to 2x scale for sharper review output.
 - Template 03 object-card notes must be very short because each card has a fixed 216px row height.
 - Template 06 image zones must keep `.jp-photo-zone { width: 100%; max-width: 100%; }` so the left image cannot intrude into the right text column.

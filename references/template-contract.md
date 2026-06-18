@@ -10,8 +10,10 @@ All templates are 1080 x 1440 vertical posters. The white and midnight versions 
 - Replace content only inside `data-text-zone` and `.jp-photo-zone` regions.
 - Use `data-slot-id` as the stable replacement key. If missing in older markup, use `data-relation-id`.
 - Image replacement changes only `<img src>`, `alt`, `object-fit`, and `object-position`.
+- Image sourcing priority is strict: user-provided images first; then system-available model/tool generation of theme-matched bitmap images; then polished SVG drawing only as a last resort.
+- If SVG drawing is used because bitmap generation was unavailable, failed, or could not return project-local files, record that reason in the spec `assumptions` or output manifest.
 - Final image sources must be raster files (`.png`, `.jpg`, `.jpeg`, `.webp`) or remote bitmap URLs. Do not leave `.svg` or `data:image/svg+xml` in rendered HTML.
-- If SVG is used to construct fallback art, rasterize it into `generated-images/*.png` before filling the template.
+- If SVG is used to construct fallback art, rasterize it into PNG before filling the template.
 - Text replacement changes only text content inside the target zone.
 - Validation must check punctuation, quote style, overflow, poster dimensions, and image frame fill.
 
